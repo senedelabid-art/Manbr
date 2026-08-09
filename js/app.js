@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const regPassword = document.getElementById('regPassword');
     const registerBtn = document.getElementById('registerBtn');
 
-    // عناصر التطبيق الرئيسي
+    // عناصر التطبيق الرئيسي والتبويبات
     const navItems = document.querySelectorAll('.nav-item');
     const settingsView = document.getElementById('settingsView');
     const backToAppBtn = document.getElementById('backToAppBtn');
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loginForm.style.display = 'none';
     });
 
-    // إنشاء حساب جديد (حفظ في قاعدة البيانات المحلية/localStorage)
+    // إنشاء حساب جديد
     registerBtn.addEventListener('click', () => {
         const fName = regFirstName.value.trim();
         const lName = regLastName.value.trim();
@@ -97,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('mainChatName').innerText = fullName;
         document.getElementById('mainAvatar').innerText = currentUser.firstName.charAt(0);
         
-        // بيانات صفحة الإعدادات
         document.getElementById('settingsAvatar').innerText = currentUser.firstName.charAt(0);
         document.getElementById('settingsFullName').innerText = fullName;
         document.getElementById('settingsPhone').innerText = currentUser.phone;
@@ -108,24 +107,40 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('profileLinkInput').value = `menbrchat.com/@${currentUser.username}`;
     }
 
-    // تنقل التبويبات السفلية (Bottom Navigation)
+    // تنقل التبويبات السفلية (Bottom Navigation) بشكل منفصل
     navItems.forEach(item => {
-        item.addEventListener('click', (e) => {
+        item.addEventListener('click', () => {
             navItems.forEach(nav => nav.classList.remove('active'));
-            const target = item.getAttribute('data-target');
             item.classList.add('active');
 
-            if(target === 'settings') {
-                settingsView.style.display = 'flex'; // فتح صفحة الإعدادات الديناميكية
+            const target = item.getAttribute('data-target');
+
+            // إخفاء كل الواجهات أولاً
+            document.querySelector('.sidebar').style.display = 'none';
+            document.getElementById('mainContentArea').style.display = 'none';
+            settingsView.style.display = 'none';
+
+            // إظهار الواجهة المطلوبة حسب التبويب
+            if (target === 'chats') {
+                document.querySelector('.sidebar').style.display = 'flex';
+                document.getElementById('mainContentArea').style.display = 'flex';
+            } else if (target === 'settings') {
+                settingsView.style.display = 'flex';
+            } else {
+                alert('صفحة ' + target + ' قيد التجهيز.. سيتم تفعيلها في الدفعة القادمة!');
+                document.querySelector('.sidebar').style.display = 'flex';
+                document.getElementById('mainContentArea').style.display = 'flex';
             }
         });
     });
 
     backToAppBtn.addEventListener('click', () => {
         settingsView.style.display = 'none';
+        document.querySelector('.sidebar').style.display = 'flex';
+        document.getElementById('mainContentArea').style.display = 'flex';
     });
 
-    // تعديل البيانات الديناميكية عبر الأزرار
+    // تعديل البيانات الديناميكية
     document.getElementById('editNameBtn').addEventListener('click', () => {
         const newName = prompt('أدخل الاسم الجديد:', currentUser.firstName);
         if(newName) {
@@ -148,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let messages = JSON.parse(localStorage.getItem('manbr_messages')) || [];
 
     function renderMessages() {
+        if(!list) return;
         list.innerHTML = '';
         messages.forEach(msg => {
             const div = document.createElement('div');
