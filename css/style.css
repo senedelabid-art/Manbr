@@ -100,6 +100,7 @@ body {
     font-weight: bold;
     font-size: 18px;
     color: #fff;
+    flex-shrink: 0;
 }
 .chat-info {
     flex: 1;
@@ -193,7 +194,6 @@ body {
     cursor: pointer;
     font-weight: bold;
 }
-/* النوافذ المنبثقة */
 .modal {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
