@@ -1,19 +1,18 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAXCM4n0UWeuEEI6uSV5wx-aN87icjqXuw",
+  authDomain: "menbrchat.firebaseapp.com",
+  projectId: "menbrchat",
+  storageBucket: "menbrchat.firebasestorage.app",
+  messagingSenderId: "741501842921",
+  appId: "1:741501842921:web:6e13d47178bd59cbcc0778"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// تسجيل حساب جديد بالبريد وكلمة المرور
 export async function registerWithEmail(email, password) {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -23,7 +22,6 @@ export async function registerWithEmail(email, password) {
     }
 }
 
-// تسجيل الدخول
 export async function loginWithEmail(email, password) {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
