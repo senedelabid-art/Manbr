@@ -1,46 +1,31 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+import { getFirestore, doc, setDoc, getDoc, query, collection, where, getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-// ضع إعدادات مشروعك الحقيقي هنا
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAXCM4n0UWeuEEI6uSV5wx-aN87icjqXuw",
+  authDomain: "menbrchat.firebaseapp.com",
+  projectId: "menbrchat",
+  storageBucket: "menbrchat.firebasestorage.app",
+  messagingSenderId: "741501842921",
+  appId: "1:741501842921:web:6e13d47178bd59cbcc0778"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// 1. التحقق مما إذا كان اسم المستخدم (Username) مستخدماً من قبل (Unique Check)
+// فحص هل اسم المستخدم محجوز
 export async function isUsernameTaken(username) {
     const q = query(collection(db, "users"), where("username", "==", username));
     const querySnapshot = await getDocs(q);
-    return !querySnapshot.empty; // يعود بـ true إذا كان محجوزاً مسبقاً
+    return !querySnapshot.empty;
 }
 
-// 2. حفظ بيانات المستخدم الجديد في قاعدة البيانات
+// حفظ بيانات المستخدم
 export async function saveUserData(userId, userData) {
     try {
-        await setDoc(doc(db, "users", userId), {
-            ...userData,
-            createdAt: new Date().toISOString()
-        });
+        await setDoc(doc(db, "users", userId), userData);
         return { success: true };
     } catch (error) {
         return { success: false, error: error.message };
-    }
-}
-
-// 3. جلب بيانات المستخدم
-export async function getUserData(userId) {
-    const docRef = doc(db, "users", userId);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-        return docSnap.data();
-    } else {
-        return null;
     }
 }
