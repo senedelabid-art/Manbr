@@ -3,139 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manbr - مانبر</title>
+    <title>Manbr - تيليجرام الآمن</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <!-- 0. صفحة تسجيل الدخول / التسجيل (تظهر إذا لم يتم تسجيل الدخول) -->
+    <!-- شاشة المصادقة الحقيقية (الخطوات الأربع) -->
     <div id="authScreen" class="auth-screen">
-        <div class="auth-container">
-            <h2 class="auth-logo">Manbr Telegram</h2>
-            <div class="auth-tabs">
-                <button class="auth-tab-btn active" id="tabLoginBtn">تسجيل الدخول</button>
-                <button class="auth-tab-btn" id="tabRegisterBtn">إنشاء حساب جديد</button>
+        <div class="auth-card">
+            <h2>تطبيق Manbr</h2>
+            <p>يرجى تسجيل الدخول للمتابعة</p>
+
+            <!-- خطوة 1: البريد الإلكتروني -->
+            <div id="step1Email" class="auth-step">
+                <input type="email" id="authEmailInput" placeholder="أدخل البريد الإلكتروني" required>
+                <button id="sendOtpBtn" class="primary-btn">إرسال كود التحقق</button>
             </div>
 
-            <!-- نموذج تسجيل الدخول -->
-            <div id="loginForm" class="auth-form">
-                <input type="email" id="loginEmail" placeholder="البريد الالكتروني">
-                <input type="password" id="loginPassword" placeholder="كلمة السر">
-                <button id="loginBtn" class="primary-btn">تسجيل الدخول</button>
-                <a href="#" id="forgotPassword" class="auth-link">نسيت كلمة السر؟</a>
+            <!-- خطوة 2: كود التحقق (6 أرقام) -->
+            <div id="step2Otp" class="auth-step" style="display: none;">
+                <p>أدخل الكود المرسل إلى بريدك</p>
+                <div class="otp-inputs">
+                    <input type="text" maxlength="1" class="otp-box">
+                    <input type="text" maxlength="1" class="otp-box">
+                    <input type="text" maxlength="1" class="otp-box">
+                    <input type="text" maxlength="1" class="otp-box">
+                    <input type="text" maxlength="1" class="otp-box">
+                    <input type="text" maxlength="1" class="otp-box">
+                </div>
+                <button id="verifyOtpBtn" class="primary-btn">تحقق من الكود</button>
+                <button id="resendOtpBtn" class="text-btn">إعادة إرسال الكود</button>
             </div>
 
-            <!-- نموذج انشاء حساب -->
-            <div id="registerForm" class="auth-form" style="display: none;">
-                <input type="text" id="regFirstName" placeholder="الاسم الاول">
-                <input type="text" id="regLastName" placeholder="الاسم الاخير">
-                <input type="email" id="regEmail" placeholder="البريد الالكتروني">
-                <input type="password" id="regPassword" placeholder="كلمة السر">
-                <input type="password" id="regConfirmPassword" placeholder="تأكيد كلمة السر">
-                <button id="registerBtn" class="primary-btn">إنشاء حساب</button>
+            <!-- خطوة 3: كلمة المرور -->
+            <div id="step3Password" class="auth-step" style="display: none;">
+                <input type="password" id="authPasswordInput" placeholder="كلمة المرور الجديدة">
+                <input type="password" id="authConfirmPasswordInput" placeholder="تأكيد كلمة المرور">
+                <button id="savePasswordBtn" class="primary-btn">تأكيد كلمة المرور</button>
+            </div>
+
+            <!-- خطوة 4: إنشاء البروفايل وUsername الفريد -->
+            <div id="step4Profile" class="auth-step" style="display: none;">
+                <input type="text" id="profileFirstName" placeholder="الاسم الأول">
+                <input type="text" id="profileLastName" placeholder="الاسم الأخير">
+                <input type="text" id="profileUsername" placeholder="اسم المستخدم (مثل: @username)">
+                <button id="finishRegisterBtn" class="primary-btn">إنهاء وإنشاء الحساب</button>
             </div>
         </div>
     </div>
 
-    <!-- التطبيق الرئيسي (يظهر بعد تسجيل الدخول) -->
+    <!-- التطبيق الرئيسي (مخفي حتى يتم تسجيل الدخول) -->
     <div id="appContainer" class="app-container" style="display: none;">
-        
-        <!-- الشريط الجانبي / الشات -->
         <div class="sidebar">
-            <div class="sidebar-header">
-                <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="بحث...">
-                </div>
+            <h3>المحادثات</h3>
+            <div class="search-box">
+                <input type="text" id="globalSearchInput" placeholder="ابحث عن اسم أو @username">
             </div>
-            
-            <div class="chat-list" id="chatList">
-                <div class="chat-item active">
-                    <div class="avatar" id="mainAvatar">أ</div>
-                    <div class="chat-info">
-                        <div class="chat-name-time">
-                            <span class="chat-name" id="mainChatName">مرحباً بك في مانبر</span>
-                            <span class="chat-time">الآن</span>
-                        </div>
-                        <div class="chat-last-msg">تم تفعيل النظام الديناميكي بنجاح!</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 1. الشريط السفلي Bottom Navigation (4 تبويبات) -->
-            <div class="bottom-nav">
-                <button class="nav-item active" data-target="chats">💬 المحادثات</button>
-                <button class="nav-item" data-target="contacts">👥 جهات الاتصال</button>
-                <button class="nav-item" data-target="settings">⚙️ الاعدادات</button>
-                <button class="nav-item" data-target="profile">👤 الملف الشخصي</button>
-            </div>
+            <div id="searchResultsList"></div>
         </div>
 
-        <!-- منطقة المحتوى الرئيسية / المحادثة أو الإعدادات -->
-        <div class="main-chat" id="mainContentArea">
+        <div id="mainContentArea" class="main-content">
             <div class="chat-header">
-                <span style="font-weight: 600;" id="currentChatTitle">تطبيق مانبر (Manbr)</span>
-                <span style="font-size: 11px; color: #707579;" id="onlineStatus">متصل الآن</span>
+                <h4 id="mainChatName">اختر محادثة</h4>
             </div>
-            <div class="chat-messages" id="msgList"></div>
-            <div class="chat-input-area" id="chatInputArea">
+            <div id="msgList" class="msg-list"></div>
+            <div class="chat-input-area">
                 <input type="text" id="msgInput" placeholder="اكتب رسالة...">
-                <button class="send-btn" id="sendBtn">&#10148;</button>
+                <button id="sendBtn">إرسال</button>
             </div>
         </div>
 
-    </div>
-
-    <!-- نافذة الإعدادات الديناميكية الكاملة (تفتح عبر تبويب الاعدادات) -->
-    <div id="settingsView" class="settings-full-view" style="display: none;">
-        <div class="settings-header">
-            <button id="backToAppBtn" class="back-btn">⬅ العودة</button>
-            <h2>الإعدادات</h2>
-        </div>
-        <div class="settings-body">
-            <!-- القسم 1: الحساب -->
-            <div class="settings-section">
-                <h3>الحساب</h3>
-                <div class="setting-profile-card">
-                    <div class="avatar-large" id="settingsAvatar">ع</div>
-                    <div class="profile-info-text">
-                        <h4 id="settingsFullName">اسم المستخدم</h4>
-                        <span id="settingsPhone" style="color: #707579; font-size: 13px;">رقم الهاتف غير متوفر</span>
-                    </div>
-                </div>
-                <div class="setting-row">
-                    <span>الاسم: <b id="displayNameVal"></b></span>
-                    <button class="edit-btn" id="editNameBtn">✏️ تعديل البيانات</button>
-                </div>
-                <div class="setting-row">
-                    <span>البريد: <b id="displayEmailVal"></b></span>
-                    <button class="edit-btn" id="editEmailBtn">تغيير البريد</button>
-                </div>
-                <div class="setting-row">
-                    <span>رقم الهاتف: <b id="displayPhoneVal">محدد حسب المستخدم</b></span>
-                    <button class="edit-btn" id="editPhoneBtn">تغيير الرقم</button>
-                </div>
-                <div class="setting-row">
-                    <span>اسم المستخدم: <b id="displayUsernameVal">@username</b></span>
-                    <button class="edit-btn" id="editUsernameBtn">تغيير اسم المستخدم</button>
-                </div>
-                <div class="setting-row link-row">
-                    <span>رابط الملف: <input type="text" id="profileLinkInput" readonly style="background:transparent; border:none; color:#5288c1; width:200px;"></span>
-                    <button class="edit-btn" id="copyLinkBtn">نسخ الرابط</button>
-                </div>
-            </div>
-
-            <!-- القسم 2: الاعدادات المتقدمة لتليجرام -->
-            <div class="settings-section">
-                <h3>الإعدادات العامة</h3>
-                <div class="setting-menu-item">💾 البيانات والتخزين</div>
-                <div class="setting-menu-item">📁 مجلدات المحادثات</div>
-                <div class="setting-menu-item">💻 الأجهزة المتصلة</div>
-                <div class="setting-menu-item">🔔 الإشعارات والأصوات</div>
-                <div class="setting-menu-item">🔒 الخصوصية والأمان</div>
-            </div>
+        <!-- شريط التنقل السفلي 4 خيارات -->
+        <div class="bottom-nav">
+            <div class="nav-item active" data-target="chats">المحادثات</div>
+            <div class="nav-item" data-target="contacts">جهات الاتصال</div>
+            <div class="nav-item" data-target="settings">الإعدادات</div>
+            <div class="nav-item" data-target="profile">الملف الشخصي</div>
         </div>
     </div>
 
-    <script src="js/app.js"></script>
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>
