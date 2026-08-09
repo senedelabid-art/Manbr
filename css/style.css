@@ -18,6 +18,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%;
+    position: relative;
 }
 .sidebar-header {
     padding: 10px 15px;
@@ -49,6 +50,29 @@ body {
     width: 100%;
     font-size: 14px;
     text-align: right;
+}
+.side-menu {
+    position: absolute;
+    top: 60px;
+    right: 15px;
+    background: #182533;
+    border: 1px solid #232e3c;
+    border-radius: 10px;
+    width: 200px;
+    z-index: 100;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+.menu-item {
+    padding: 12px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #232e3c;
+}
+.menu-item:last-child {
+    border-bottom: none;
+}
+.menu-item:hover {
+    background: #2b5278;
 }
 .chat-list {
     flex: 1;
@@ -169,4 +193,48 @@ body {
     cursor: pointer;
     font-weight: bold;
 }
-
+/* النوافذ المنبثقة */
+.modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+.modal-content {
+    background: #17212b;
+    padding: 25px;
+    border-radius: 12px;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border: 1px solid #232e3c;
+}
+.modal-content h3 {
+    font-size: 16px;
+    color: #fff;
+}
+.modal-content input {
+    background: #242f3d;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    color: #fff;
+    outline: none;
+}
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+.modal-buttons button {
+    background: #5288c1;
+    border: none;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
