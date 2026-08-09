@@ -4,194 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manbr - مانبر</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-        body {
-            background-color: #0f141c;
-            color: #f5f5f5;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-        /* Sidebar */
-        .sidebar {
-            width: 380px;
-            background-color: #17212b;
-            border-left: 1px solid #232e3c;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        .sidebar-header {
-            padding: 10px 15px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background-color: #17212b;
-        }
-        .menu-btn {
-            background: none;
-            border: none;
-            color: #707579;
-            font-size: 20px;
-            cursor: pointer;
-        }
-        .search-box {
-            flex: 1;
-            background: #242f3d;
-            border-radius: 20px;
-            padding: 8px 15px;
-            display: flex;
-            align-items: center;
-        }
-        .search-box input {
-            background: none;
-            border: none;
-            color: #fff;
-            outline: none;
-            width: 100%;
-            font-size: 14px;
-            text-align: right;
-        }
-        /* Chat List */
-        .chat-list {
-            flex: 1;
-            overflow-y: auto;
-        }
-        .chat-item {
-            display: flex;
-            align-items: center;
-            padding: 10px 15px;
-            gap: 12px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .chat-item:hover, .chat-item.active {
-            background-color: #2b5278;
-        }
-        .avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: #5288c1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 18px;
-            color: #fff;
-        }
-        .chat-info {
-            flex: 1;
-            border-bottom: 1px solid #232e3c;
-            padding-bottom: 10px;
-        }
-        .chat-name-time {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 4px;
-        }
-        .chat-name {
-            font-weight: 600;
-            font-size: 15px;
-        }
-        .chat-time {
-            font-size: 12px;
-            color: #707579;
-        }
-        .chat-last-msg {
-            font-size: 13px;
-            color: #8b9197;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 220px;
-        }
-        /* Main Chat Area */
-        .main-chat {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background-color: #0e1621;
-        }
-        .chat-header {
-            padding: 10px 20px;
-            background-color: #17212b;
-            border-bottom: 1px solid #232e3c;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .chat-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .message {
-            max-width: 60%;
-            padding: 8px 12px;
-            border-radius: 12px;
-            font-size: 14px;
-            line-height: 1.4;
-            position: relative;
-        }
-        .message.incoming {
-            background-color: #182533;
-            align-self: flex-start;
-            border-top-right-radius: 2px;
-        }
-        .message.outgoing {
-            background-color: #2b5278;
-            align-self: flex-end;
-            border-top-left-radius: 2px;
-        }
-        .chat-input-area {
-            padding: 15px;
-            background-color: #17212b;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .chat-input-area input {
-            flex: 1;
-            background: #242f3d;
-            border: none;
-            padding: 12px 15px;
-            border-radius: 20px;
-            color: #fff;
-            outline: none;
-            font-size: 14px;
-        }
-        .send-btn {
-            background: #5288c1;
-            border: none;
-            color: #fff;
-            padding: 10px 18px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-weight: bold;
-        }
-    </style>
+    <!-- استدعاء ملف التصميم الخارجي -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
     <!-- القائمة الجانبية -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <button class="menu-btn">&#9776;</button>
+            <button class="menu-btn" id="menuToggle">&#9776;</button>
             <div class="search-box">
-                <input type="text" placeholder="بحث...">
+                <input type="text" id="searchInput" placeholder="بحث...">
             </div>
         </div>
-        <div class="chat-list">
+        <div class="chat-list" id="chatList">
             <div class="chat-item active">
                 <div class="avatar" style="background-color: #e17076;">أ</div>
                 <div class="chat-info">
@@ -199,7 +25,7 @@
                         <span class="chat-name">مرحباً بك في مانبر</span>
                         <span class="chat-time">الآن</span>
                     </div>
-                    <div class="chat-last-msg">أهلاً بك، تم إطلاق المنصة بنجاح!</div>
+                    <div class="chat-last-msg">تم تحديث البنية التحتية بنجاح!</div>
                 </div>
             </div>
         </div>
@@ -208,33 +34,18 @@
     <!-- منطقة المحادثة -->
     <div class="main-chat">
         <div class="chat-header">
-            <span style="font-weight: 600;">تطبيق مانبر (Manbr)</span>
+            <span style="font-weight: 600;" id="currentChatTitle">تطبيق مانبر (Manbr)</span>
         </div>
         <div class="chat-messages" id="msgList">
-            <div class="message incoming">أهلاً بك يا بطل! تم ربط الواجهة وتجهيزها تماماً لتطابق تليجرام. ابدأ بكتابة رسالتك بالأسفل.</div>
+            <div class="message incoming">أهلاً بك يا بطل! المشروع الآن يعمل بملفات منفصلة وبنية تحتية نظيفة تليق بعام 2026.</div>
         </div>
         <div class="chat-input-area">
             <input type="text" id="msgInput" placeholder="اكتب رسالة...">
-            <button class="send-btn" onclick="sendMessage()">&#10148;</button>
+            <button class="send-btn" id="sendBtn">&#10148;</button>
         </div>
     </div>
 
-    <script>
-        function sendMessage() {
-            const input = document.getElementById('msgInput');
-            const list = document.getElementById('msgList');
-            if(input.value.trim() !== '') {
-                const msg = document.createElement('div');
-                msg.className = 'message outgoing';
-                msg.innerText = input.value;
-                list.appendChild(msg);
-                input.value = '';
-                list.scrollTop = list.scrollHeight;
-            }
-        }
-        document.getElementById('msgInput').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') { sendMessage(); }
-        });
-    </script>
+    <!-- استدعاء ملف الوظائف والمنطق الخارجي -->
+    <script src="js/app.js"></script>
 </body>
 </html>
