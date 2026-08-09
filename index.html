@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manbr - مانبر</title>
-    <!-- استدعاء ملف التصميم الخارجي -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -17,15 +16,22 @@
                 <input type="text" id="searchInput" placeholder="بحث...">
             </div>
         </div>
+        
+        <!-- القائمة الجانبية المنسدلة (الإعدادات ومجموعة جديدة) -->
+        <div class="side-menu" id="sideMenu" style="display: none;">
+            <div class="menu-item" id="openSettings">⚙️ الإعدادات والملف الشخصي</div>
+            <div class="menu-item" id="openNewGroup">👥 إنشاء مجموعة جديدة</div>
+        </div>
+
         <div class="chat-list" id="chatList">
             <div class="chat-item active">
-                <div class="avatar" style="background-color: #e17076;">أ</div>
+                <div class="avatar" style="background-color: #e17076;" id="mainAvatar">أ</div>
                 <div class="chat-info">
                     <div class="chat-name-time">
-                        <span class="chat-name">مرحباً بك في مانبر</span>
+                        <span class="chat-name" id="mainChatName">مرحباً بك في مانبر</span>
                         <span class="chat-time">الآن</span>
                     </div>
-                    <div class="chat-last-msg">تم تحديث البنية التحتية بنجاح!</div>
+                    <div class="chat-last-msg">الميزات الثلاث أضيفت بنجاح!</div>
                 </div>
             </div>
         </div>
@@ -37,7 +43,7 @@
             <span style="font-weight: 600;" id="currentChatTitle">تطبيق مانبر (Manbr)</span>
         </div>
         <div class="chat-messages" id="msgList">
-            <div class="message incoming">أهلاً بك يا بطل! المشروع الآن يعمل بملفات منفصلة وبنية تحتية نظيفة تليق بعام 2026.</div>
+            <!-- الرسائل ستظهر هنا مع الحفظ التلقائي -->
         </div>
         <div class="chat-input-area">
             <input type="text" id="msgInput" placeholder="اكتب رسالة...">
@@ -45,7 +51,30 @@
         </div>
     </div>
 
-    <!-- استدعاء ملف الوظائف والمنطق الخارجي -->
+    <!-- نافذة الإعدادات المنبثقة -->
+    <div class="modal" id="settingsModal" style="display: none;">
+        <div class="modal-content">
+            <h3>تعديل الملف الشخصي والإعدادات</h3>
+            <input type="text" id="usernameInput" placeholder="اسمك الجديد...">
+            <div class="modal-buttons">
+                <button id="saveSettings">حفظ</button>
+                <button id="closeSettings" style="background: #e17076;">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إنشاء مجموعة جديدة -->
+    <div class="modal" id="groupModal" style="display: none;">
+        <div class="modal-content">
+            <h3>إنشاء مجموعة جديدة</h3>
+            <input type="text" id="groupNameInput" placeholder="اسم المجموعة...">
+            <div class="modal-buttons">
+                <button id="createGroupBtn">إنشاء</button>
+                <button id="closeGroup" style="background: #e17076;">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
     <script src="js/app.js"></script>
 </body>
 </html>
