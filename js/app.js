@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveSettings = document.getElementById('saveSettings');
     const usernameInput = document.getElementById('usernameInput');
     const mainChatTitle = document.getElementById('currentChatTitle');
+    const mainAvatar = document.getElementById('mainAvatar');
 
     const groupModal = document.getElementById('groupModal');
     const openNewGroup = document.getElementById('openNewGroup');
@@ -19,8 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const createGroupBtn = document.getElementById('createGroupBtn');
     const groupNameInput = document.getElementById('groupNameInput');
     const chatList = document.getElementById('chatList');
+    const searchInput = document.getElementById('searchInput');
 
-    // استرجاع الرسائل المخزنة مسبقاً
+    // استرجاع الرسائل المخزنة
     let messages = JSON.parse(localStorage.getItem('manbr_messages')) || [];
     function renderMessages() {
         list.innerHTML = '';
@@ -34,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     renderMessages();
 
-    // إرسال رسالة وحفظها
+    // إرسال رسالة
     function sendMessage() {
         if(input.value.trim() !== '') {
             const newMsg = { text: input.value, type: 'outgoing' };
@@ -48,12 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
     sendBtn.addEventListener('click', sendMessage);
     input.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
 
-    // تحكم بالقائمة الجانبية
+    // القائمة الجانبية
     menuToggle.addEventListener('click', () => {
         sideMenu.style.display = sideMenu.style.display === 'none' ? 'block' : 'none';
     });
 
-    // إعدادات الملف الشخصي
+    // الإعدادات والبروفايل
     openSettings.addEventListener('click', () => {
         sideMenu.style.display = 'none';
         settingsModal.style.display = 'flex';
@@ -61,16 +63,21 @@ document.addEventListener('DOMContentLoaded', () => {
     closeSettings.addEventListener('click', () => settingsModal.style.display = 'none');
     
     saveSettings.addEventListener('click', () => {
-        if(usernameInput.value.trim() !== '') {
-            mainChatTitle.innerText = usernameInput.value;
-            localStorage.setItem('manbr_username', usernameInput.value);
+        const newName = usernameInput.value.trim();
+        if(newName !== '') {
+            mainChatTitle.innerText = newName;
+            mainAvatar.innerText = newName.charAt(0); // تحديث الأفاتار بأول حرف من الاسم
+            localStorage.setItem('manbr_username', newName);
             settingsModal.style.display = 'none';
         }
     });
 
-    // استرجاع الاسم المحفوظ
+    // استتحضار البيانات المحفوظة مسبقاً
     const savedName = localStorage.getItem('manbr_username');
-    if(savedName) { mainChatTitle.innerText = savedName; }
+    if(savedName) { 
+        mainChatTitle.innerText = savedName; 
+        mainAvatar.innerText = savedName.charAt(0);
+    }
 
     // إنشاء مجموعة جديدة
     openNewGroup.addEventListener('click', () => {
@@ -80,14 +87,16 @@ document.addEventListener('DOMContentLoaded', () => {
     closeGroup.addEventListener('click', () => groupModal.style.display = 'none');
 
     createGroupBtn.addEventListener('click', () => {
-        if(groupNameInput.value.trim() !== '') {
+        const gName = groupNameInput.value.trim();
+        if(gName !== '') {
             const groupItem = document.createElement('div');
             groupItem.className = 'chat-item';
+            groupItem.setAttribute('data-name', gName);
             groupItem.innerHTML = `
-                <div class="avatar" style="background-color: #2b5278;">م</div>
+                <div class="avatar" style="background-color: #2b5278;">${gName.charAt(0)}</div>
                 <div class="chat-info">
                     <div class="chat-name-time">
-                        <span class="chat-name">${groupNameInput.value}</span>
+                        <span class="chat-name">${gName}</span>
                         <span class="chat-time">الآن</span>
                     </div>
                     <div class="chat-last-msg">مجموعة جديدة</div>
@@ -97,5 +106,19 @@ document.addEventListener('DOMContentLoaded', () => {
             groupModal.style.display = 'none';
             groupNameInput.value = '';
         }
+    });
+
+    // ميزة البحث الفوري في المحادثات
+    searchInput.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        const items = chatList.querySelectorAll('.chat-item');
+        items.forEach(item => {
+            const name = item.getAttribute('data-name').toLowerCase();
+            if(name.includes(term)) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
+        });
     });
 });
