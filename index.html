@@ -13,25 +13,25 @@
         <div class="sidebar-header">
             <button class="menu-btn" id="menuToggle">&#9776;</button>
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="بحث...">
+                <input type="text" id="searchInput" placeholder="بحث في المحادثات...">
             </div>
         </div>
         
-        <!-- القائمة الجانبية المنسدلة (الإعدادات ومجموعة جديدة) -->
+        <!-- القائمة الجانبية المنسدلة -->
         <div class="side-menu" id="sideMenu" style="display: none;">
             <div class="menu-item" id="openSettings">⚙️ الإعدادات والملف الشخصي</div>
             <div class="menu-item" id="openNewGroup">👥 إنشاء مجموعة جديدة</div>
         </div>
 
         <div class="chat-list" id="chatList">
-            <div class="chat-item active">
-                <div class="avatar" style="background-color: #e17076;" id="mainAvatar">أ</div>
+            <div class="chat-item active" data-name="مرحباً بك في مانبر">
+                <div class="avatar" id="mainAvatar" style="background-color: #e17076;">أ</div>
                 <div class="chat-info">
                     <div class="chat-name-time">
                         <span class="chat-name" id="mainChatName">مرحباً بك في مانبر</span>
                         <span class="chat-time">الآن</span>
                     </div>
-                    <div class="chat-last-msg">الميزات الثلاث أضيفت بنجاح!</div>
+                    <div class="chat-last-msg">تمت إضافة ميزات البحث والاتصال!</div>
                 </div>
             </div>
         </div>
@@ -40,10 +40,13 @@
     <!-- منطقة المحادثة -->
     <div class="main-chat">
         <div class="chat-header">
-            <span style="font-weight: 600;" id="currentChatTitle">تطبيق مانبر (Manbr)</span>
+            <div>
+                <span style="font-weight: 650; display: block;" id="currentChatTitle">تطبيق مانبر (Manbr)</span>
+                <span style="font-size: 11px; color: #707579;" id="onlineStatus">متصل الآن</span>
+            </div>
         </div>
         <div class="chat-messages" id="msgList">
-            <!-- الرسائل ستظهر هنا مع الحفظ التلقائي -->
+            <!-- الرسائل -->
         </div>
         <div class="chat-input-area">
             <input type="text" id="msgInput" placeholder="اكتب رسالة...">
